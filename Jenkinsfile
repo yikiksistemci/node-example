@@ -2,12 +2,10 @@ node {
     def app
 
     stage('Show Parameters') {
-        steps {
-                script {
-                    echo "Registery: ${params.REGISTERY}"
-                    currentBuild.displayName = "${BUILD_NUMBER}.${params.REGISTERY}"
-                }
-            }
+        script {
+            echo "Registery: ${params.REGISTERY}"
+            currentBuild.displayName = "${BUILD_NUMBER}.${params.REGISTERY}"
+        }  
     }
 
     stage('Clone repository') {
