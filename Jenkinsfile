@@ -17,8 +17,12 @@ node {
     stage('Build image') {
         /* This builds the actual image; synonymous to
          * docker build on the command line */
-
-        app = docker.build("yunusyasar/hellonode")
+        if (params.REGISTERY == "DockerHub"){
+            app = docker.build("yunusyasar/hellonode")
+        }
+        if (params.REGISTERY == "GitLabRegistery") {
+            app = docker.build("registry.gitlab.com/bootcamp231/hellonode")
+        }
     }
 
     stage('Test image') {
@@ -39,6 +43,14 @@ node {
         echo 'Your Registery: ${params.REGISTERY}'
         if (params.REGISTERY == "DockerHub"){
             docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+                app.push("${env.BUILD_NUMBER}")
+                app.push("latest")
+                app.push("${env.BUILD_TAG}")
+            }
+        }
+
+        if (params.REGISTERY == "GitLabRegistery"){
+            docker.withRegistry('https://registry.gitlab.com', 'gitlab-registery') {
                 app.push("${env.BUILD_NUMBER}")
                 app.push("latest")
                 app.push("${env.BUILD_TAG}")
