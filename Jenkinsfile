@@ -21,7 +21,7 @@ node {
             app = docker.build("yunusyasar/hellonode")
         }
         if (params.REGISTERY == "GitLabRegistery") {
-            app = docker.build("registry.gitlab.com/bootcamp231/hellonode")
+            app = docker.build("registry.gitlab.com/bootcamp231/node-example")
         }
     }
 
@@ -46,6 +46,7 @@ node {
                 app.push("${env.BUILD_NUMBER}")
                 app.push("latest")
                 app.push("${env.BUILD_TAG}")
+                app.push("${params.IMAGETAG}")
             }
         }
 
